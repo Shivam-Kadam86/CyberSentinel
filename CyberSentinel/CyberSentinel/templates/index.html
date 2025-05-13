@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block header_title %}Network Security Dashboard{% endblock %}
+
+{% block content %}
+<!-- Main Dashboard -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="dashboard-card status-overview" id="monitoring-section">
+            <div class="card-header">
+                <h3><i class="fas fa-satellite-dish"></i> Monitoring Control</h3>
+            </div>
+            <div class="card-body">
+                <div class="monitoring-controls">
+                    <button id="start-monitoring-btn" class="control-btn start-btn">
+                        <i class="fas fa-play"></i> Start Monitoring
+                    </button>
+                    <button id="stop-monitoring-btn" class="control-btn stop-btn" disabled>
+                        <i class="fas fa-stop"></i> Stop Monitoring
+                    </button>
+                </div>
+                <div class="monitoring-status">
+                    <div class="status-indicator">
+                        <div class="radar-animation" id="radar-animation">
+                            <div class="radar-spinner"></div>
+                            <div class="radar-circle"></div>
+                            <div class="radar-circle"></div>
+                            <div class="radar-circle"></div>
+                        </div>
+                    </div>
+                    <div class="status-text">
+                        <h4>Current Status:</h4>
+                        <p id="monitor-status-text">Idle - Click Start to begin monitoring</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Traffic Stats -->
+    <div class="col-lg-6" id="traffic-section">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-chart-pie"></i> Traffic Distribution</h3>
+                <div class="card-controls">
+                    <span id="total-packets-counter">0 packets</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="traffic-pie-chart"></canvas>
+                </div>
+                <div class="traffic-legend" id="traffic-legend">
+                    <!-- Legend will be populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Incident Timeline -->
+    <div class="col-lg-6">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-chart-line"></i> Incident Timeline</h3>
+                <div class="card-controls">
+                    <span id="total-incidents-counter">0 incidents</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="incidents-timeline-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Alerts Section -->
+    <div class="col-lg-8" id="alerts-section">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-radiation"></i> Security Alerts</h3>
+                <div class="card-controls">
+                    <button class="btn-card-action" id="clear-alerts-btn">
+                        <i class="fas fa-broom"></i> Clear
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="alerts-container" id="alerts-container">
+                    <div class="no-alerts-message" id="no-alerts-message">
+                        <i class="fas fa-shield-check"></i>
+                        <p>No security alerts detected</p>
+                    </div>
+                    <div id="alerts-list">
+                        <!-- Alerts will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Report Generation -->
+    <div class="col-lg-4" id="reports-section">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-file-pdf"></i> Reports</h3>
+            </div>
+            <div class="card-body">
+                <div class="report-actions">
+                    <button id="generate-report-btn" class="action-btn generate-btn">
+                        <i class="fas fa-file-pdf"></i> Generate Report
+                    </button>
+                    <button id="download-report-btn" class="action-btn download-btn" disabled>
+                        <i class="fas fa-download"></i> Download Report
+                    </button>
+                    <hr>
+                    <div class="email-form">
+                        <h4><i class="fas fa-envelope"></i> Email Report</h4>
+                        <div class="form-group">
+                            <label for="email-recipient">Recipient Email</label>
+                            <input type="email" id="email-recipient" class="form-control" placeholder="Enter email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="email-subject">Subject</label>
+                            <input type="text" id="email-subject" class="form-control" value="Network Security Report">
+                        </div>
+                        <button id="send-email-btn" class="action-btn email-btn" disabled>
+                            <i class="fas fa-paper-plane"></i> Send Report
+                        </button>
+                    </div>
+                </div>
+                <div class="operation-status" id="operation-status">
+                    <!-- Status messages will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">Security Alert</h5>
+                <button type="button" class="btn-close neon-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="alert-modal-body">
+                <!-- Alert details will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
